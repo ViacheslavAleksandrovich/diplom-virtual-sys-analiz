@@ -1,0 +1,45 @@
+# Django
+Django==4.2.11
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+python-dotenv==1.0.0
+
+# Database
+psycopg2-binary==2.9.11
+sqlparse==0.4.4
+
+# Authentication & Security
+PyJWT==2.10.1
+djangorestframework-simplejwt==5.5.1
+django-filter==23.5
+
+# Utilities
+requests==2.31.0
+numpy>=2.3.0
+scipy>=1.16.0
+
+# Testing
+pytest==7.4.3
+pytest-django==4.7.0
+pytest-cov==4.1.0
+factory-boy==3.3.0
+
+# Code Quality
+black==23.12.1
+flake8==6.1.0
+isort==5.13.2
+pylint==3.0.3
+
+# Async Tasks (Optional)
+celery==5.3.4
+redis==5.0.1
+
+# Development
+django-extensions==3.2.3
+django-debug-toolbar==4.2.0
+
+# Production
+gunicorn==21.2.0
+whitenoise==6.6.0
+Pillow==10.4.0
+uritemplate==4.2.0

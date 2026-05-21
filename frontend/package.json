@@ -1,0 +1,57 @@
+{
+  "name": "virtual-training-simulator-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Virtual Training Simulator for Distance Learning Course 'System Analysis'",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    "axios": "^1.6.0",
+    "react-icons": "^4.12.0",
+    "mathjax": "^3.2.2",
+    "recharts": "^2.10.0",
+    "zustand": "^4.4.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^4.9.5",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "react-scripts": "5.0.1",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.1.0",
+    "@testing-library/user-event": "^14.5.0",
+    "@types/jest": "^29.5.14",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "vitest": "^1.0.0",
+    "eslint": "^8.53.0",
+    "prettier": "^3.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src/",
+    "format": "prettier --write src/"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

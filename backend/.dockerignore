@@ -1,0 +1,37 @@
+# VCS / metadata
+.git
+.gitignore
+
+# Python cache / virtualenv
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Local runtime artifacts
+media/
+staticfiles/
+logs/
+db.sqlite3
+*.log
+
+# Tooling / tests output
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Local env files
+.env
+.env.*
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

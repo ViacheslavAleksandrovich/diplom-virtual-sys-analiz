@@ -41,7 +41,6 @@ services:
   - type: web
     name: sys-analiz-frontend
     runtime: static
-    plan: free
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: build

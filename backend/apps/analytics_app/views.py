@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
 
+from .services import refresh_student_analytics
 from .models import StudentStatistics, TaskStatistics, ModuleStatistics, LearningPath
 from .serializers import (
     StudentStatisticsSerializer, TaskStatisticsSerializer,
@@ -16,8 +17,7 @@ class StudentStatisticsView(generics.RetrieveAPIView):
     
     def get_object(self):
         """Get statistics for current user."""
-        obj, _ = StudentStatistics.objects.get_or_create(student=self.request.user)
-        return obj
+        return refresh_student_analytics(self.request.user)
 
 
 class TaskStatisticsListView(generics.ListAPIView):

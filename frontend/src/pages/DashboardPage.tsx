@@ -20,6 +20,11 @@ interface RankingRow {
   experience_points: number;
 }
 
+interface ResultRow {
+  status: 'pending' | 'correct' | 'partial' | 'incorrect';
+  points_earned: number;
+}
+
 const toList = <T,>(payload: unknown): T[] => {
   if (Array.isArray(payload)) {
     return payload as T[];
@@ -34,6 +39,7 @@ const DashboardPage: React.FC = () => {
   const { user } = useAuth();
   const [stats, setStats] = React.useState<StudentStats | null>(null);
   const [ranking, setRanking] = React.useState<RankingRow | null>(null);
+  const [results, setResults] = React.useState<ResultRow[]>([]);
   const [firstModuleId, setFirstModuleId] = React.useState<number | null>(null);
   const [firstTaskId, setFirstTaskId] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState(true);
@@ -57,6 +63,8 @@ const DashboardPage: React.FC = () => {
         ]);
         setStats(statsResp.data);
         setRanking(rankingResp.data);
+        const resultsResp = await apiService.getResults();
+        setResults(toList<ResultRow>(resultsResp.data));
         const modulesResponse = await apiService.getModules();
         const modules = toList<{ id: number }>(modulesResponse.data);
         const moduleId = modules[0]?.id || null;
@@ -73,6 +81,18 @@ const DashboardPage: React.FC = () => {
 
     load();
   }, [user]);
+
+  const derivedStats = React.useMemo(() => {
+    const completedTasks = results.filter((item) => item.status === 'correct' || item.status === 'partial').length;
+    const totalPoints = results.reduce((sum, item) => sum + (item.points_earned || 0), 0);
+    const successRate = results.length ? Math.round((completedTasks / results.length) * 100) : 0;
+
+    return {
+      total_tasks_completed: stats?.total_tasks_completed ?? completedTasks,
+      total_points_earned: stats?.total_points_earned ?? totalPoints,
+      success_rate: stats?.success_rate ?? successRate,
+    };
+  }, [results, stats]);
 
   if (loading) {
     return <div className="text-slate-700">Loading dashboard...</div>;
@@ -92,9 +112,9 @@ const DashboardPage: React.FC = () => {
   }
 
   const chartData = [
-    { name: 'Tasks', value: stats?.total_tasks_completed || 0 },
-    { name: 'Points', value: stats?.total_points_earned || 0 },
-    { name: 'Success', value: Math.round(stats?.success_rate || 0) },
+    { name: 'Tasks', value: derivedStats.total_tasks_completed || 0 },
+    { name: 'Points', value: derivedStats.total_points_earned || 0 },
+    { name: 'Success', value: Math.round(derivedStats.success_rate || 0) },
   ];
 
   return (
@@ -117,11 +137,11 @@ const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="app-card p-5">
           <p className="text-xs text-slate-500">Completed tasks</p>
-          <p className="text-3xl font-semibold text-slate-900 mt-1">{stats?.total_tasks_completed ?? 0}</p>
+          <p className="text-3xl font-semibold text-slate-900 mt-1">{derivedStats.total_tasks_completed}</p>
         </div>
         <div className="app-card p-5">
           <p className="text-xs text-slate-500">Total points</p>
-          <p className="text-3xl font-semibold text-slate-900 mt-1">{stats?.total_points_earned ?? 0}</p>
+          <p className="text-3xl font-semibold text-slate-900 mt-1">{derivedStats.total_points_earned}</p>
         </div>
         <div className="app-card p-5">
           <p className="text-xs text-slate-500">Ranking level</p>

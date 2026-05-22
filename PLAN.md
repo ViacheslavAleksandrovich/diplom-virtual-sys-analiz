@@ -159,7 +159,7 @@ Features:
 - task statistics
 - average attempts
 - success rates
-- teacher reports
+- teacher reports and test outcome breakdowns
 
 ---
 

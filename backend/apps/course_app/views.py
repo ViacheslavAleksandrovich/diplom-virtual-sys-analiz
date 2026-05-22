@@ -113,6 +113,9 @@ class TaskSubmitView(APIView):
         # Update module progress
         self._update_module_progress(request.user, task.module)
         
+        from apps.analytics_app.services import refresh_student_analytics
+        refresh_student_analytics(request.user)
+        
         return Response(
             TaskResultSerializer(task_result).data,
             status=status.HTTP_200_OK

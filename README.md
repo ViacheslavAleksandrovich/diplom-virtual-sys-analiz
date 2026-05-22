@@ -62,6 +62,27 @@ docker-compose exec backend python manage.py seed_demo_data
 - `teacher.demo@example.com` / `DemoPass123!`
 - `admin.demo@example.com` / `DemoPass123!`
 
+### 5. Деплой на Render (Blueprint)
+
+У репозиторії є готовий файл `render.yaml` для деплою в один клік.
+
+Кроки:
+```bash
+git add render.yaml
+git commit -m "Add Render blueprint"
+git push
+```
+
+Далі у Render:
+1. **Blueprints → New Blueprint Instance**
+2. Виберіть цей репозиторій
+3. Натисніть **Apply**
+
+Render створить:
+- web service для backend (`sys-analiz-backend`),
+- static site для frontend (`sys-analiz-frontend`),
+- PostgreSQL (`sys-analiz-db`).
+
 ## 📁 Структура проекту
 
 ```

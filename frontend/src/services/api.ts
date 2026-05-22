@@ -197,6 +197,10 @@ class ApiService {
     return this.api.get('/analytics/learning-path/');
   }
 
+  async getStudentReport(): Promise<ApiResponse<any>> {
+    return this.api.get('/analytics/student-report/');
+  }
+
   // Gamification endpoints
   async getAchievements(): Promise<ApiResponse<any>> {
     return this.api.get('/gamification/achievements/');

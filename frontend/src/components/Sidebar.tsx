@@ -69,11 +69,9 @@ const Sidebar: React.FC = () => {
             Teacher panel
           </NavLink>
         )}
-        {user?.role === 'admin' && (
-          <NavLink to="/admin" className={linkClassName}>
-            Admin panel
-          </NavLink>
-        )}
+        <NavLink to="/admin" className={linkClassName}>
+          My report
+        </NavLink>
       </nav>
     </aside>
   );

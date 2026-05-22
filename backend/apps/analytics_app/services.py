@@ -52,3 +52,34 @@ def refresh_student_analytics(student: User) -> StudentStatistics:
     ranking.save()
 
     return statistics
+
+
+def build_student_analytics_row(student: User) -> dict:
+    """Build a reporting row for a student."""
+    stats = refresh_student_analytics(student)
+    module_progress = ModuleProgress.objects.filter(student=student)
+    average_module_completion = module_progress.aggregate(avg=Avg('completion_percent'))['avg'] or 0.0
+    completed_modules = module_progress.filter(status='completed').count()
+
+    ranking, _ = StudentRanking.objects.get_or_create(student=student)
+
+    achievements_count = UserAchievement.objects.filter(user=student).count()
+
+    return {
+        'id': student.id,
+        'username': student.username,
+        'full_name': student.get_full_name(),
+        'email': student.email,
+        'role': student.role,
+        'total_tasks_completed': stats.total_tasks_completed,
+        'total_points_earned': stats.total_points_earned,
+        'average_score': stats.average_score,
+        'total_learning_hours': stats.total_learning_hours,
+        'average_attempts': stats.average_attempts,
+        'success_rate': stats.success_rate,
+        'completed_modules': completed_modules,
+        'average_module_completion': float(average_module_completion),
+        'ranking_level': ranking.level,
+        'ranking_points': ranking.total_points,
+        'achievements_count': achievements_count,
+    }

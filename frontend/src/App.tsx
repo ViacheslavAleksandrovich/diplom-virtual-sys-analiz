@@ -79,14 +79,7 @@ function App() {
                 </RoleRoute>
               }
             />
-            <Route
-              path="/admin"
-              element={
-                <RoleRoute allowedRoles={['admin']}>
-                  <AdminDashboardPage />
-                </RoleRoute>
-              }
-            />
+            <Route path="/admin" element={<AdminDashboardPage />} />
           </Route>
 
           <Route path="/" element={<RootRedirect />} />

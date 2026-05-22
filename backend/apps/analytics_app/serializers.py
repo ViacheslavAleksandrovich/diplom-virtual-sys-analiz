@@ -1,5 +1,8 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 from .models import StudentStatistics, TaskStatistics, ModuleStatistics, LearningPath
+
+User = get_user_model()
 
 
 class StudentStatisticsSerializer(serializers.ModelSerializer):
@@ -57,3 +60,24 @@ class LearningPathSerializer(serializers.ModelSerializer):
             'average_tasks_per_day', 'updated_at'
         ]
         read_only_fields = ['id', 'updated_at']
+
+
+class StudentAnalyticsSerializer(serializers.Serializer):
+    """Serializer for admin/teacher student analytics rows."""
+
+    id = serializers.IntegerField()
+    username = serializers.CharField()
+    full_name = serializers.CharField()
+    email = serializers.EmailField()
+    role = serializers.CharField()
+    total_tasks_completed = serializers.IntegerField()
+    total_points_earned = serializers.IntegerField()
+    average_score = serializers.FloatField()
+    total_learning_hours = serializers.FloatField()
+    average_attempts = serializers.FloatField()
+    success_rate = serializers.FloatField()
+    completed_modules = serializers.IntegerField()
+    average_module_completion = serializers.FloatField()
+    ranking_level = serializers.IntegerField()
+    ranking_points = serializers.IntegerField()
+    achievements_count = serializers.IntegerField()

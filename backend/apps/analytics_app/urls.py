@@ -8,4 +8,5 @@ urlpatterns = [
     path('task-statistics/', views.TaskStatisticsListView.as_view(), name='task_stats'),
     path('module-statistics/', views.ModuleStatisticsListView.as_view(), name='module_stats'),
     path('learning-path/', views.LearningPathView.as_view(), name='learning_path'),
+    path('student-report/', views.StudentAnalyticsReportView.as_view(), name='student_report'),
 ]

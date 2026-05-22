@@ -83,6 +83,8 @@ Render створить:
 - static site для frontend (`sys-analiz-frontend`),
 - PostgreSQL (`sys-analiz-db`).
 
+Примітка для free tier Render: `preDeployCommand` не підтримується, тому міграції та сидинг запускаються у `startCommand`.
+
 ## 📁 Структура проекту
 
 ```

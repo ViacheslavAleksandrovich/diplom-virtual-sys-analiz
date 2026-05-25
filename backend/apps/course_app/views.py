@@ -10,6 +10,7 @@ from .serializers import (
     TheoryMaterialSerializer, TaskDetailSerializer, TaskListSerializer,
     TaskResultSerializer, TaskResultCreateSerializer, ModuleProgressSerializer
 )
+from apps.auth_app.permissions import IsAdminOrTeacher
 
 
 class ModuleListView(generics.ListAPIView):
@@ -40,25 +41,41 @@ class TheoryDetailView(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class TaskListView(generics.ListAPIView):
-    """List tasks with filtering."""
-    
+class TaskListView(generics.ListCreateAPIView):
+    """List tasks (all authenticated users) or create a task (teacher/admin only)."""
+
     queryset = Task.objects.filter(is_active=True)
-    serializer_class = TaskListSerializer
-    permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['module', 'task_type', 'difficulty_level']
     search_fields = ['title', 'condition_text']
     ordering_fields = ['difficulty_level', 'created_at', 'order_number']
     ordering = ['order_number']
 
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [IsAdminOrTeacher()]
+        return [permissions.IsAuthenticated()]
 
-class TaskDetailView(generics.RetrieveAPIView):
-    """Get task details."""
-    
-    queryset = Task.objects.filter(is_active=True)
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return TaskDetailSerializer
+        return TaskListSerializer
+
+
+class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """Retrieve a task (all users), update or delete (teacher/admin only)."""
+
     serializer_class = TaskDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.request.method in ('PUT', 'PATCH', 'DELETE'):
+            return [IsAdminOrTeacher()]
+        return [permissions.IsAuthenticated()]
+
+    def get_queryset(self):
+        if self.request.method in ('PUT', 'PATCH', 'DELETE'):
+            return Task.objects.all()
+        return Task.objects.filter(is_active=True)
 
 
 class TaskSubmitView(APIView):
@@ -98,7 +115,18 @@ class TaskSubmitView(APIView):
             task_result.attempts_count += 1
             task_result.submitted_answer = submitted_answer
             task_result.is_using_hint = is_using_hint
-        
+
+        # Phase-based attempt limit (assess mode: max 3 tries)
+        phase = request.data.get('phase', 'practice')
+        if phase == 'assess' and task_result.attempts_count > 3:
+            return Response(
+                {'detail': 'Maximum 3 attempts allowed in assessment mode.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Pass current attempt count so checker applies correct score multiplier
+        task.current_attempts = task_result.attempts_count
+
         # Check answer (basic implementation - will be extended in checker_app)
         from apps.checker_app.checker import check_answer
         result_data = check_answer(task, submitted_answer)
@@ -189,8 +217,8 @@ class ModuleProgressListView(generics.ListAPIView):
         return ModuleProgress.objects.filter(student=self.request.user)
 
 
-class ModuleProgressDetailView(generics.RetrieveAPIView):
-    """Get module progress detail."""
+class ModuleProgressDetailView(generics.RetrieveUpdateAPIView):
+    """Get or update module progress detail."""
     
     serializer_class = ModuleProgressSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -198,3 +226,19 @@ class ModuleProgressDetailView(generics.RetrieveAPIView):
     def get_queryset(self):
         """Get progress for current user."""
         return ModuleProgress.objects.filter(student=self.request.user)
+
+
+class ModuleProgressByModuleView(generics.RetrieveUpdateAPIView):
+    """Get or update module progress for the current user by module ID."""
+
+    serializer_class = ModuleProgressSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        module_id = self.kwargs['module_id']
+        obj, _ = ModuleProgress.objects.get_or_create(
+            student=self.request.user,
+            module_id=module_id,
+            defaults={'started_at': timezone.now()}
+        )
+        return obj

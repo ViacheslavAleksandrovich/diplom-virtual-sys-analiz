@@ -8,6 +8,7 @@ import ModulePage from './pages/ModulePage';
 import TaskPage from './pages/TaskPage';
 import TeacherDashboardPage from './pages/TeacherDashboardPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import LeaderboardPage from './pages/LeaderboardPage';
 import MainLayout from './layouts/MainLayout';
 
 interface ProtectedRouteProps {
@@ -71,6 +72,7 @@ function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/modules/:moduleId" element={<ModulePage />} />
             <Route path="/tasks/:taskId" element={<TaskPage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route
               path="/teacher"
               element={
@@ -79,7 +81,14 @@ function App() {
                 </RoleRoute>
               }
             />
-            <Route path="/admin" element={<AdminDashboardPage />} />
+            <Route
+              path="/admin"
+              element={
+                <RoleRoute allowedRoles={['admin']}>
+                  <AdminDashboardPage />
+                </RoleRoute>
+              }
+            />
           </Route>
 
           <Route path="/" element={<RootRedirect />} />

@@ -7,11 +7,11 @@ const MainLayout: React.FC = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen flex">
+    <div className="h-screen flex overflow-hidden">
       <Sidebar />
 
-      <div className="flex-1 flex flex-col">
-        <header className="h-16 border-b border-slate-200 bg-white/90 backdrop-blur sticky top-0 z-10 flex items-center justify-between px-6">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="h-16 shrink-0 border-b border-slate-200 bg-white/90 backdrop-blur z-10 flex items-center justify-between px-6">
           <div>
             <h1 className="text-sm text-slate-500">Role</h1>
             <span className="text-sm font-semibold text-slate-900 capitalize">{user?.role}</span>
@@ -25,7 +25,7 @@ const MainLayout: React.FC = () => {
           </button>
         </header>
 
-        <main className="p-6 md:p-8">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8">
           <Outlet />
         </main>
       </div>

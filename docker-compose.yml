@@ -42,8 +42,8 @@ services:
       dockerfile: Dockerfile
     container_name: sys_analiz_frontend
     environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8000/api}
-      REACT_APP_API_TIMEOUT: ${REACT_APP_API_TIMEOUT:-30000}
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000/api}
+      VITE_API_TIMEOUT: ${VITE_API_TIMEOUT:-30000}
     volumes:
       - ./frontend:/app:z
       - /app/node_modules

@@ -18,8 +18,11 @@ const LoginPage: React.FC = () => {
 
     try {
       await login(email, password);
-    } catch {
-      setError('Невірний email або пароль');
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { detail?: string; non_field_errors?: string[] } } };
+      const data = axiosErr.response?.data;
+      const msg = data?.detail || data?.non_field_errors?.[0] || 'Invalid email or password.';
+      setError(msg);
     }
   };
 

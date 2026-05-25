@@ -11,12 +11,21 @@ interface User {
   avatar?: string;
 }
 
+interface RegisterData {
+  email: string;
+  username: string;
+  first_name?: string;
+  last_name?: string;
+  password: string;
+  password_confirm: string;
+}
+
 export interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (data: any) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   setUser: (user: User | null) => void;
 }
@@ -59,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (data: any) => {
+  const register = async (data: RegisterData) => {
     setIsLoading(true);
     try {
       const response = await apiService.register(data);

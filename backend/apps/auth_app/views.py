@@ -11,6 +11,7 @@ from datetime import timedelta
 import uuid
 
 from .models import Group, PasswordReset
+from .permissions import IsAdmin, IsAdminOrTeacher
 from .serializers import (
     UserDetailSerializer, UserListSerializer, UserCreateSerializer,
     UserUpdateSerializer, ChangePasswordSerializer,
@@ -285,11 +286,11 @@ class UserDetailView(generics.RetrieveAPIView):
 
 
 class UserListView(generics.ListAPIView):
-    """List users."""
+    """List users — restricted to admin and teacher roles."""
     
     queryset = User.objects.all()
     serializer_class = UserListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrTeacher]
     filterset_fields = ['role', 'is_active']
     search_fields = ['username', 'email', 'first_name', 'last_name']
     ordering_fields = ['created_at', 'username', 'email']

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
-const API_TIMEOUT = parseInt(process.env.REACT_APP_API_TIMEOUT || '30000');
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT || '30000');
 
 interface ApiResponse<T> {
   data: T;
@@ -61,10 +61,11 @@ class ApiService {
     // Handle token refresh
     this.api.interceptors.response.use(
       (response) => response,
-      async (error: AxiosError) => {
-        const originalRequest = error.config;
+      async (error: AxiosError & { _retried?: boolean }) => {
+        const originalRequest = error.config as typeof error.config & { _retried?: boolean };
 
-        if (error.response?.status === 401 && originalRequest) {
+        if (error.response?.status === 401 && originalRequest && !originalRequest._retried) {
+          originalRequest._retried = true;
           const refreshToken = this.getRefreshToken();
           if (refreshToken) {
             try {
@@ -164,12 +165,21 @@ class ApiService {
     return this.api.get(`/courses/tasks/${id}/`);
   }
 
-  async submitTask(taskId: number, answer: any, usingHint: boolean = false): Promise<ApiResponse<any>> {
+  async submitTask(taskId: number, answer: any, usingHint: boolean = false, phase: string = 'practice'): Promise<ApiResponse<any>> {
     return this.api.post(`/courses/tasks/${taskId}/submit/`, {
       task: taskId,
       submitted_answer: answer,
       is_using_hint: usingHint,
+      phase,
     });
+  }
+
+  async getModuleProgress(moduleId: number): Promise<ApiResponse<any>> {
+    return this.api.get(`/courses/progress/module/${moduleId}/`);
+  }
+
+  async updateModuleProgress(moduleId: number, data: Record<string, unknown>): Promise<ApiResponse<any>> {
+    return this.api.patch(`/courses/progress/module/${moduleId}/`, data);
   }
 
   async getProgress(): Promise<ApiResponse<any>> {
@@ -183,6 +193,19 @@ class ApiService {
   // Analytics endpoints
   async getMyStatistics(): Promise<ApiResponse<any>> {
     return this.api.get('/analytics/my-statistics/');
+  }
+
+  // Task management (teacher/admin)
+  async createTask(data: Record<string, unknown>): Promise<ApiResponse<any>> {
+    return this.api.post('/courses/tasks/', data);
+  }
+
+  async updateTask(taskId: number, data: Record<string, unknown>): Promise<ApiResponse<any>> {
+    return this.api.patch(`/courses/tasks/${taskId}/`, data);
+  }
+
+  async deleteTask(taskId: number): Promise<ApiResponse<void>> {
+    return this.api.delete(`/courses/tasks/${taskId}/`);
   }
 
   async getTaskStatistics(): Promise<ApiResponse<any>> {

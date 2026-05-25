@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import DOMPurify from 'dompurify';
 
 export interface TheoryMaterial {
   id: number;
@@ -12,6 +13,7 @@ export interface TheoryMaterial {
 
 interface TheoryViewerProps {
   materials: TheoryMaterial[];
+  onMaterialViewed?: (id: number) => void;
 }
 
 declare global {
@@ -24,15 +26,28 @@ declare global {
 
 const MATHJAX_SCRIPT_ID = 'mathjax-cdn-script';
 
-const TheoryViewer: React.FC<TheoryViewerProps> = ({ materials }) => {
+const TheoryViewer: React.FC<TheoryViewerProps> = ({ materials, onMaterialViewed }) => {
   const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(materials[0]?.id ?? null);
   const [mathJaxReady, setMathJaxReady] = useState(false);
+
+  const handleSelectMaterial = (id: number) => {
+    setSelectedMaterialId(id);
+    onMaterialViewed?.(id);
+  };
 
   useEffect(() => {
     if (!materials.some((item) => item.id === selectedMaterialId)) {
       setSelectedMaterialId(materials[0]?.id ?? null);
     }
   }, [materials, selectedMaterialId]);
+
+  // Mark the initially visible material as viewed
+  useEffect(() => {
+    if (materials[0]?.id != null) {
+      onMaterialViewed?.(materials[0].id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const selectedMaterial = useMemo(
     () => materials.find((item) => item.id === selectedMaterialId) ?? null,
@@ -83,7 +98,7 @@ const TheoryViewer: React.FC<TheoryViewerProps> = ({ materials }) => {
             <button
               key={material.id}
               type="button"
-              onClick={() => setSelectedMaterialId(material.id)}
+              onClick={() => handleSelectMaterial(material.id)}
               className={`w-full text-left rounded-lg px-3 py-2.5 text-sm transition-colors ${
                 selectedMaterialId === material.id
                   ? 'bg-indigo-600 text-white'
@@ -103,7 +118,7 @@ const TheoryViewer: React.FC<TheoryViewerProps> = ({ materials }) => {
 
             <div
               className="prose max-w-none text-slate-800"
-              dangerouslySetInnerHTML={{ __html: selectedMaterial.html_content }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedMaterial.html_content) }}
             />
             {!mathJaxReady && /\\\(|\\\[|\$\$|\$[^$]/.test(selectedMaterial.html_content) && (
               <p className="mt-3 text-xs text-amber-700">

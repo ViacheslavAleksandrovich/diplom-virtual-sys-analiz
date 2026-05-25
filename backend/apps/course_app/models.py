@@ -123,6 +123,14 @@ class Task(models.Model):
         help_text=_('Acceptable error margin for calculations')
     )
     
+    # Answer options (for multiple_choice tasks)
+    options = models.JSONField(
+        _('Options'),
+        blank=True,
+        null=True,
+        help_text=_('Answer options for multiple choice, e.g. [{"key":"A","text":"..."}]')
+    )
+
     # Additional settings
     is_active = models.BooleanField(_('Is Active'), default=True)
     points = models.PositiveIntegerField(_('Points'), default=10)

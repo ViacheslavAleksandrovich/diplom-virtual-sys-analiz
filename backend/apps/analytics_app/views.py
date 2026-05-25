@@ -11,6 +11,7 @@ from .serializers import (
     ModuleStatisticsSerializer, LearningPathSerializer,
     StudentAnalyticsSerializer,
 )
+from apps.auth_app.permissions import IsAdmin, IsAdminOrTeacher
 
 User = get_user_model()
 
@@ -27,11 +28,11 @@ class StudentStatisticsView(generics.RetrieveAPIView):
 
 
 class TaskStatisticsListView(generics.ListAPIView):
-    """List task statistics."""
+    """List task statistics — restricted to admin/teacher."""
     
     queryset = TaskStatistics.objects.all()
     serializer_class = TaskStatisticsSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrTeacher]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['task__module', 'task__difficulty_level']
     ordering_fields = ['average_score', 'success_rate', 'total_submissions']
@@ -39,11 +40,11 @@ class TaskStatisticsListView(generics.ListAPIView):
 
 
 class ModuleStatisticsListView(generics.ListAPIView):
-    """List module statistics."""
+    """List module statistics — restricted to admin/teacher."""
     
     queryset = ModuleStatistics.objects.all()
     serializer_class = ModuleStatisticsSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrTeacher]
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['average_completion_percent', 'students_completed']
     ordering = ['-average_completion_percent']
@@ -62,9 +63,9 @@ class LearningPathView(generics.RetrieveUpdateAPIView):
 
 
 class StudentAnalyticsReportView(APIView):
-    """Student analytics report."""
+    """Student analytics report — admin/teacher only."""
 
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrTeacher]
 
     def get(self, request):
         students = User.objects.filter(is_active=True).order_by('role', 'username')

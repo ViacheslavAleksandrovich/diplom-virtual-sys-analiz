@@ -44,9 +44,19 @@ class TaskDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'module', 'module_title', 'title', 'task_type', 'task_type_display', 'difficulty_level',
             'difficulty_level_display', 'condition_text', 'explanation', 'reference_answer',
-            'tolerance', 'is_active', 'points', 'order_number', 'created_at'
+            'tolerance', 'options', 'is_active', 'points', 'order_number', 'created_at'
         ]
         read_only_fields = ['id', 'created_at']
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            role = getattr(request.user, 'role', 'student')
+            if role not in ('teacher', 'admin'):
+                data.pop('reference_answer', None)
+                data.pop('explanation', None)
+        return data
 
 
 class TaskListSerializer(serializers.ModelSerializer):
@@ -70,16 +80,17 @@ class TaskResultSerializer(serializers.ModelSerializer):
     
     task_title = serializers.CharField(source='task.title', read_only=True)
     status_display = serializers.CharField(source='get_status_display', read_only=True)
+    explanation = serializers.CharField(source='task.explanation', read_only=True, default='')
     
     class Meta:
         model = TaskResult
         fields = [
             'id', 'task', 'task_title', 'submitted_answer', 'status', 'status_display',
             'score', 'points_earned', 'attempts_count', 'is_using_hint', 'feedback',
-            'started_at', 'completed_at'
+            'explanation', 'started_at', 'completed_at'
         ]
-        read_only_fields = ['id', 'status', 'score', 'points_earned', 'feedback', 
-                           'started_at', 'completed_at']
+        read_only_fields = ['id', 'status', 'score', 'points_earned', 'feedback',
+                           'explanation', 'started_at', 'completed_at']
 
 
 class TaskResultCreateSerializer(serializers.ModelSerializer):

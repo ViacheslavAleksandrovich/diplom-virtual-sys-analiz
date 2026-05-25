@@ -23,4 +23,5 @@ urlpatterns = [
     # Module Progress
     path('progress/', views.ModuleProgressListView.as_view(), name='progress_list'),
     path('progress/<int:pk>/', views.ModuleProgressDetailView.as_view(), name='progress_detail'),
+    path('progress/module/<int:module_id>/', views.ModuleProgressByModuleView.as_view(), name='progress_by_module'),
 ]

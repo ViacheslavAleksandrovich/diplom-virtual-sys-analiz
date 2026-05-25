@@ -43,9 +43,9 @@ services:
     runtime: static
     rootDir: frontend
     buildCommand: npm ci && npm run build
-    staticPublishPath: build
+    staticPublishPath: dist
     envVars:
-      - key: REACT_APP_API_URL
+      - key: VITE_API_URL
         value: "https://sys-analiz-backend.onrender.com/api"
     routes:
       - type: rewrite

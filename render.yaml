@@ -15,26 +15,8 @@ services:
         value: "False"
       - key: ALLOWED_HOSTS
         value: ".onrender.com,localhost,127.0.0.1"
-      - key: DB_HOST
-        fromDatabase:
-          name: sys-analiz-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: sys-analiz-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: sys-analiz-db
-          property: database
-      - key: DB_USER
-        fromDatabase:
-          name: sys-analiz-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: sys-analiz-db
-          property: password
+      - key: DATABASE_URL
+        sync: false  # Set manually in Render dashboard (paste your Neon connection string)
       - key: CORS_ALLOWED_ORIGINS
         value: "https://sys-analiz-frontend.onrender.com,http://localhost:3000"
 
@@ -52,9 +34,4 @@ services:
         source: /*
         destination: /index.html
 
-databases:
-  - name: sys-analiz-db
-    plan: free
-    region: frankfurt
-    databaseName: sys_analiz
-    user: sys_analiz
+# databases section removed — using Neon external database via DATABASE_URL

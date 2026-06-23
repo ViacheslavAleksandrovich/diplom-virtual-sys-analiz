@@ -52,12 +52,12 @@ class TaskListView(generics.ListCreateAPIView):
     ordering = ['order_number']
 
     def get_permissions(self):
-        if self.request.method == 'POST':
+        if self.request and self.request.method == 'POST':
             return [IsAdminOrTeacher()]
         return [permissions.IsAuthenticated()]
 
     def get_serializer_class(self):
-        if self.request.method == 'POST':
+        if self.request and self.request.method == 'POST':
             return TaskDetailSerializer
         return TaskListSerializer
 
@@ -68,12 +68,12 @@ class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TaskDetailSerializer
 
     def get_permissions(self):
-        if self.request.method in ('PUT', 'PATCH', 'DELETE'):
+        if self.request and self.request.method in ('PUT', 'PATCH', 'DELETE'):
             return [IsAdminOrTeacher()]
         return [permissions.IsAuthenticated()]
 
     def get_queryset(self):
-        if self.request.method in ('PUT', 'PATCH', 'DELETE'):
+        if self.request and self.request.method in ('PUT', 'PATCH', 'DELETE'):
             return Task.objects.all()
         return Task.objects.filter(is_active=True)
 

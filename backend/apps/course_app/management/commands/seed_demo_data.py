@@ -483,6 +483,167 @@ MODULES_PAYLOAD = [
 ]
 
 
+# ---------------------------------------------------------------------------
+# Student profiles: each entry defines one demo student and their activity.
+# task_results: keyed by (module_order_number, task_order_number)
+#   status: "correct" | "partial" | "incorrect"
+#   score:  0-100
+#   answer: submitted_answer JSON
+#   attempts: number of attempts
+# ---------------------------------------------------------------------------
+STUDENT_PROFILES = [
+    {
+        "email": "alice.chen@example.com",
+        "username": "alice.chen@example.com",
+        "first_name": "Alice",
+        "last_name": "Chen",
+        "password": "DemoPass123!",
+        "ranking": {"total_points": 540, "level": 5, "experience_points": 540, "achievements_count": 8},
+        # Completed all 5 modules
+        "module_progress": {
+            1: {"completion_percent": 100, "total_score": 46, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            2: {"completion_percent": 100, "total_score": 62, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            3: {"completion_percent": 100, "total_score": 56, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            4: {"completion_percent": 100, "total_score": 54, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            5: {"completion_percent": 100, "total_score": 48, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+        },
+        "task_results": {
+            (1, 1): {"status": "correct",   "score": 100, "answer": {"answer": "B"},                    "attempts": 1},
+            (1, 2): {"status": "correct",   "score": 100, "answer": {"answer": "testability"},          "attempts": 1},
+            (1, 3): {"status": "correct",   "score": 100, "answer": {"value": 10},                      "attempts": 1},
+            (1, 4): {"status": "correct",   "score": 100, "answer": {"nodes": [{"id": "goal"}, {"id": "inputs"}, {"id": "processing"}, {"id": "outputs"}], "edges": [{"source": "goal", "target": "inputs"}, {"source": "goal", "target": "processing"}, {"source": "goal", "target": "outputs"}]}, "attempts": 1},
+            (2, 1): {"status": "correct",   "score": 100, "answer": {"matrix": [[1, 3, 5], [0.333, 1, 2], [0.2, 0.5, 1]]}, "attempts": 2},
+            (2, 2): {"status": "correct",   "score": 100, "answer": {"value": 0.72},                    "attempts": 1},
+            (2, 3): {"status": "correct",   "score": 100, "answer": {"answer": "B"},                    "attempts": 1},
+            (2, 4): {"status": "correct",   "score": 100, "answer": {"answer": "inconsistent judgments"}, "attempts": 1},
+            (3, 1): {"status": "correct",   "score": 100, "answer": {"nodes": [{"id": "goal"}, {"id": "cost"}, {"id": "quality"}, {"id": "time"}], "edges": [{"source": "goal", "target": "cost"}, {"source": "goal", "target": "quality"}, {"source": "goal", "target": "time"}]}, "attempts": 1},
+            (3, 2): {"status": "correct",   "score": 100, "answer": {"value": 88.89},                   "attempts": 1},
+            (3, 3): {"status": "correct",   "score": 100, "answer": {"answer": "consistency"},          "attempts": 1},
+            (3, 4): {"status": "correct",   "score": 100, "answer": {"answer": "C"},                    "attempts": 1},
+            (4, 1): {"status": "correct",   "score": 100, "answer": {"value": 73},                      "attempts": 1},
+            (4, 2): {"status": "correct",   "score": 100, "answer": {"answer": "A"},                    "attempts": 1},
+            (4, 3): {"status": "correct",   "score": 100, "answer": {"answer": "technical debt"},       "attempts": 1},
+            (4, 4): {"status": "correct",   "score": 100, "answer": {"nodes": [{"id": "goal"}, {"id": "foundation"}, {"id": "featureA"}, {"id": "featureB"}], "edges": [{"source": "goal", "target": "foundation"}, {"source": "goal", "target": "featureA"}, {"source": "goal", "target": "featureB"}]}, "attempts": 1},
+            (5, 1): {"status": "correct",   "score": 100, "answer": {"value": 25},                      "attempts": 1},
+            (5, 2): {"status": "correct",   "score": 100, "answer": {"answer": "B"},                    "attempts": 1},
+            (5, 3): {"status": "correct",   "score": 100, "answer": {"answer": "defect density"},       "attempts": 1},
+            (5, 4): {"status": "correct",   "score": 100, "answer": {"nodes": [{"id": "quality"}, {"id": "reliability"}, {"id": "maintainability"}, {"id": "usability"}], "edges": [{"source": "quality", "target": "reliability"}, {"source": "quality", "target": "maintainability"}, {"source": "quality", "target": "usability"}]}, "attempts": 1},
+        },
+    },
+    {
+        "email": "bob.martinez@example.com",
+        "username": "bob.martinez@example.com",
+        "first_name": "Bob",
+        "last_name": "Martinez",
+        "password": "DemoPass123!",
+        "ranking": {"total_points": 370, "level": 4, "experience_points": 370, "achievements_count": 5},
+        # Completed 3 modules, in progress on 4th
+        "module_progress": {
+            1: {"completion_percent": 100, "total_score": 44, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            2: {"completion_percent": 100, "total_score": 55, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            3: {"completion_percent": 100, "total_score": 50, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            4: {"completion_percent": 50,  "total_score": 24, "theory_viewed_percent": 70,  "tasks_completed": 2, "status": "in_progress"},
+        },
+        "task_results": {
+            (1, 1): {"status": "correct",   "score": 100, "answer": {"answer": "B"},              "attempts": 1},
+            (1, 2): {"status": "correct",   "score": 100, "answer": {"answer": "testability"},    "attempts": 2},
+            (1, 3): {"status": "correct",   "score": 100, "answer": {"value": 10},                "attempts": 1},
+            (1, 4): {"status": "partial",   "score": 70,  "answer": {"nodes": [{"id": "goal"}, {"id": "inputs"}, {"id": "outputs"}], "edges": [{"source": "goal", "target": "inputs"}, {"source": "goal", "target": "outputs"}]}, "attempts": 2},
+            (2, 1): {"status": "partial",   "score": 75,  "answer": {"matrix": [[1, 2, 4], [0.5, 1, 2], [0.25, 0.5, 1]]}, "attempts": 3},
+            (2, 2): {"status": "correct",   "score": 100, "answer": {"value": 0.72},              "attempts": 1},
+            (2, 3): {"status": "correct",   "score": 100, "answer": {"answer": "B"},              "attempts": 1},
+            (2, 4): {"status": "correct",   "score": 100, "answer": {"answer": "inconsistent judgments"}, "attempts": 1},
+            (3, 1): {"status": "partial",   "score": 65,  "answer": {"nodes": [{"id": "goal"}, {"id": "cost"}, {"id": "quality"}], "edges": [{"source": "goal", "target": "cost"}, {"source": "goal", "target": "quality"}]}, "attempts": 2},
+            (3, 2): {"status": "correct",   "score": 100, "answer": {"value": 88.89},             "attempts": 1},
+            (3, 3): {"status": "correct",   "score": 100, "answer": {"answer": "consistency"},    "attempts": 1},
+            (3, 4): {"status": "correct",   "score": 100, "answer": {"answer": "C"},              "attempts": 1},
+            (4, 1): {"status": "correct",   "score": 100, "answer": {"value": 73},                "attempts": 1},
+            (4, 2): {"status": "correct",   "score": 100, "answer": {"answer": "A"},              "attempts": 1},
+        },
+    },
+    {
+        "email": "carol.white@example.com",
+        "username": "carol.white@example.com",
+        "first_name": "Carol",
+        "last_name": "White",
+        "password": "DemoPass123!",
+        "ranking": {"total_points": 215, "level": 3, "experience_points": 215, "achievements_count": 3},
+        # Completed 2 modules, in progress on 3rd
+        "module_progress": {
+            1: {"completion_percent": 100, "total_score": 40, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            2: {"completion_percent": 100, "total_score": 48, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            3: {"completion_percent": 50,  "total_score": 22, "theory_viewed_percent": 60,  "tasks_completed": 2, "status": "in_progress"},
+        },
+        "task_results": {
+            (1, 1): {"status": "correct",   "score": 100, "answer": {"answer": "B"},                "attempts": 1},
+            (1, 2): {"status": "partial",   "score": 60,  "answer": {"answer": "clarity"},          "attempts": 2},
+            (1, 3): {"status": "correct",   "score": 100, "answer": {"value": 10},                  "attempts": 2},
+            (1, 4): {"status": "incorrect", "score": 0,   "answer": {"nodes": [{"id": "goal"}], "edges": []}, "attempts": 3},
+            (2, 1): {"status": "partial",   "score": 60,  "answer": {"matrix": [[1, 2, 3], [0.5, 1, 1.5], [0.33, 0.67, 1]]}, "attempts": 3},
+            (2, 2): {"status": "correct",   "score": 100, "answer": {"value": 0.72},                "attempts": 1},
+            (2, 3): {"status": "correct",   "score": 100, "answer": {"answer": "B"},                "attempts": 1},
+            (2, 4): {"status": "partial",   "score": 70,  "answer": {"answer": "wrong answers"},    "attempts": 2},
+            (3, 1): {"status": "partial",   "score": 55,  "answer": {"nodes": [{"id": "goal"}, {"id": "cost"}, {"id": "quality"}], "edges": [{"source": "goal", "target": "cost"}]}, "attempts": 2},
+            (3, 2): {"status": "correct",   "score": 100, "answer": {"value": 88.89},               "attempts": 2},
+        },
+    },
+    {
+        "email": "david.kim@example.com",
+        "username": "david.kim@example.com",
+        "first_name": "David",
+        "last_name": "Kim",
+        "password": "DemoPass123!",
+        "ranking": {"total_points": 105, "level": 2, "experience_points": 105, "achievements_count": 1},
+        # Completed 1 module, struggling on 2nd
+        "module_progress": {
+            1: {"completion_percent": 100, "total_score": 32, "theory_viewed_percent": 100, "tasks_completed": 4, "status": "completed"},
+            2: {"completion_percent": 25,  "total_score": 12, "theory_viewed_percent": 40,  "tasks_completed": 1, "status": "in_progress"},
+        },
+        "task_results": {
+            (1, 1): {"status": "correct",   "score": 100, "answer": {"answer": "B"},              "attempts": 2},
+            (1, 2): {"status": "incorrect", "score": 0,   "answer": {"answer": "measurable"},     "attempts": 3},
+            (1, 3): {"status": "correct",   "score": 100, "answer": {"value": 10},                "attempts": 2},
+            (1, 4): {"status": "incorrect", "score": 0,   "answer": {"nodes": [], "edges": []},   "attempts": 3},
+            (2, 1): {"status": "partial",   "score": 50,  "answer": {"matrix": [[1, 1, 1], [1, 1, 1], [1, 1, 1]]}, "attempts": 4},
+        },
+    },
+    {
+        "email": "eve.johnson@example.com",
+        "username": "eve.johnson@example.com",
+        "first_name": "Eve",
+        "last_name": "Johnson",
+        "password": "DemoPass123!",
+        "ranking": {"total_points": 42, "level": 1, "experience_points": 42, "achievements_count": 0},
+        # Just started, only partially done with module 1
+        "module_progress": {
+            1: {"completion_percent": 25, "total_score": 22, "theory_viewed_percent": 50, "tasks_completed": 2, "status": "in_progress"},
+        },
+        "task_results": {
+            (1, 1): {"status": "correct",   "score": 100, "answer": {"answer": "B"},          "attempts": 1},
+            (1, 2): {"status": "partial",   "score": 60,  "answer": {"answer": "accuracy"},   "attempts": 2},
+        },
+    },
+    {
+        "email": "student.demo@example.com",
+        "username": "student.demo@example.com",
+        "first_name": "Demo",
+        "last_name": "Student",
+        "password": "DemoPass123!",
+        "ranking": {"total_points": 130, "level": 2, "experience_points": 130, "achievements_count": 2},
+        "module_progress": {
+            1: {"completion_percent": 75, "total_score": 36, "theory_viewed_percent": 100, "tasks_completed": 3, "status": "in_progress"},
+            2: {"completion_percent": 25, "total_score": 16, "theory_viewed_percent": 50,  "tasks_completed": 1, "status": "in_progress"},
+        },
+        "task_results": {
+            (1, 1): {"status": "correct",   "score": 100, "answer": {"answer": "B"},              "attempts": 1},
+            (1, 2): {"status": "correct",   "score": 100, "answer": {"answer": "testability"},    "attempts": 2},
+            (1, 3): {"status": "correct",   "score": 100, "answer": {"value": 10},                "attempts": 1},
+            (2, 1): {"status": "partial",   "score": 60,  "answer": {"matrix": [[1, 2, 3], [0.5, 1, 2], [0.33, 0.5, 1]]}, "attempts": 3},
+        },
+    },
+]
+
+
 class Command(BaseCommand):
     help = "Seed idempotent demo data for modules, theory, tasks, and base analytics."
 
@@ -527,7 +688,7 @@ class Command(BaseCommand):
             module_data["theory"] = theory_payload
             module_data["tasks"] = tasks_payload
 
-        self._seed_student_context()
+        self._seed_rich_student_data()
         self._seed_analytics_rows()
 
         if not quiet:
@@ -535,114 +696,189 @@ class Command(BaseCommand):
                 self.style.SUCCESS(
                     f"Demo seed complete: modules={CourseModule.objects.count()} "
                     f"(new {created_modules}), theory={TheoryMaterial.objects.count()} "
-                    f"(new {created_theory}), tasks={Task.objects.count()} (new {created_tasks})."
+                    f"(new {created_theory}), tasks={Task.objects.count()} (new {created_tasks}), "
+                    f"students={User.objects.filter(role='student').count()}."
                 )
             )
 
     def _ensure_demo_users(self):
-        User.objects.filter(email="student.demo@example.com").exists() or User.objects.create_user(
-            email="student.demo@example.com",
-            username="student.demo@example.com",
-            password="DemoPass123!",
-            role="student",
-            first_name="Demo",
-            last_name="Student",
-        )
-        User.objects.filter(email="teacher.demo@example.com").exists() or User.objects.create_user(
-            email="teacher.demo@example.com",
-            username="teacher.demo@example.com",
-            password="DemoPass123!",
-            role="teacher",
-            first_name="Demo",
-            last_name="Teacher",
-        )
-        User.objects.filter(email="admin.demo@example.com").exists() or User.objects.create_user(
-            email="admin.demo@example.com",
-            username="admin.demo@example.com",
-            password="DemoPass123!",
-            role="admin",
-            first_name="Demo",
-            last_name="Admin",
-            is_staff=True,
-        )
+        """Create all demo users defined in STUDENT_PROFILES plus teacher and admin."""
+        for profile in STUDENT_PROFILES:
+            if not User.objects.filter(email=profile["email"]).exists():
+                User.objects.create_user(
+                    email=profile["email"],
+                    username=profile["username"],
+                    password=profile["password"],
+                    role="student",
+                    first_name=profile["first_name"],
+                    last_name=profile["last_name"],
+                )
 
-    def _seed_student_context(self):
-        students = User.objects.filter(role="student", is_active=True)
-        if not students.exists():
-            return
+        if not User.objects.filter(email="teacher.demo@example.com").exists():
+            User.objects.create_user(
+                email="teacher.demo@example.com",
+                username="teacher.demo@example.com",
+                password="DemoPass123!",
+                role="teacher",
+                first_name="Demo",
+                last_name="Teacher",
+            )
 
-        first_module = CourseModule.objects.order_by("order_number").first()
-        first_task = Task.objects.order_by("module__order_number", "order_number").first()
+        if not User.objects.filter(email="admin.demo@example.com").exists():
+            User.objects.create_user(
+                email="admin.demo@example.com",
+                username="admin.demo@example.com",
+                password="DemoPass123!",
+                role="admin",
+                first_name="Demo",
+                last_name="Admin",
+                is_staff=True,
+            )
 
-        for student in students:
+    def _seed_rich_student_data(self):
+        """Create TaskResult, ModuleProgress, StudentRanking, StudentStatistics for each profile."""
+        # Build lookup maps
+        task_map = {
+            (t.module.order_number, t.order_number): t
+            for t in Task.objects.select_related("module").filter(is_active=True)
+        }
+        module_map = {
+            m.order_number: m
+            for m in CourseModule.objects.filter(is_active=True)
+        }
+
+        for profile in STUDENT_PROFILES:
+            try:
+                student = User.objects.get(email=profile["email"])
+            except User.DoesNotExist:
+                continue
+
+            # --- TaskResult ---
+            total_points = 0
+            total_score_sum = 0
+            correct_count = 0
+            total_attempts_sum = 0
+            result_count = 0
+
+            for (mod_order, task_order), r in profile["task_results"].items():
+                task = task_map.get((mod_order, task_order))
+                if not task:
+                    continue
+                points_earned = round(task.points * r["score"] / 100)
+                total_points += points_earned
+                total_score_sum += r["score"]
+                total_attempts_sum += r["attempts"]
+                result_count += 1
+                if r["status"] == "correct":
+                    correct_count += 1
+
+                TaskResult.objects.get_or_create(
+                    student=student,
+                    task=task,
+                    defaults={
+                        "submitted_answer": r["answer"],
+                        "status": r["status"],
+                        "score": r["score"],
+                        "points_earned": points_earned,
+                        "attempts_count": r["attempts"],
+                        "completed_at": timezone.now(),
+                        "feedback": "",
+                    },
+                )
+
+            # --- ModuleProgress ---
+            for mod_order, prog in profile["module_progress"].items():
+                module = module_map.get(mod_order)
+                if not module:
+                    continue
+                ModuleProgress.objects.get_or_create(
+                    student=student,
+                    module=module,
+                    defaults={
+                        **prog,
+                        "started_at": timezone.now(),
+                        "completed_at": timezone.now() if prog["status"] == "completed" else None,
+                    },
+                )
+
+            # --- StudentRanking ---
             StudentRanking.objects.get_or_create(
                 student=student,
-                defaults={"total_points": 120, "level": 2, "experience_points": 120, "achievements_count": 1},
+                defaults=profile["ranking"],
             )
+
+            # --- StudentStatistics derived from actual results ---
+            avg_score = round(total_score_sum / result_count, 1) if result_count else 0.0
+            avg_attempts = round(total_attempts_sum / result_count, 1) if result_count else 0.0
+            success_rate = round(correct_count / result_count * 100, 1) if result_count else 0.0
+            learning_hours = round(result_count * 0.4, 1)
+
             StudentStatistics.objects.get_or_create(
                 student=student,
                 defaults={
-                    "total_tasks_completed": 2,
-                    "total_points_earned": 30,
-                    "average_score": 75.0,
-                    "total_learning_hours": 2.5,
-                    "average_attempts": 1.4,
-                    "success_rate": 68.0,
+                    "total_tasks_completed": result_count,
+                    "total_points_earned": total_points,
+                    "average_score": avg_score,
+                    "total_learning_hours": learning_hours,
+                    "average_attempts": avg_attempts,
+                    "success_rate": success_rate,
                 },
             )
 
-            if first_module:
-                ModuleProgress.objects.get_or_create(
-                    student=student,
-                    module=first_module,
-                    defaults={
-                        "completion_percent": 40,
-                        "total_score": 30,
-                        "theory_viewed_percent": 80,
-                        "tasks_completed": 1,
-                        "status": "in_progress",
-                        "started_at": timezone.now(),
-                    },
-                )
-
-            if first_task:
-                TaskResult.objects.get_or_create(
-                    student=student,
-                    task=first_task,
-                    defaults={
-                        "submitted_answer": {"selected": "B"},
-                        "status": "correct",
-                        "score": 100,
-                        "points_earned": first_task.points,
-                        "attempts_count": 1,
-                        "completed_at": timezone.now(),
-                        "feedback": "Demo pre-filled result.",
-                    },
-                )
-
     def _seed_analytics_rows(self):
+        """Compute TaskStatistics and ModuleStatistics from actual TaskResult data."""
         for task in Task.objects.select_related("module"):
-            TaskStatistics.objects.get_or_create(
+            results = list(task.results.all())
+            if not results:
+                TaskStatistics.objects.get_or_create(
+                    task=task,
+                    defaults={
+                        "total_submissions": 0,
+                        "successful_submissions": 0,
+                        "partial_submissions": 0,
+                        "failed_submissions": 0,
+                        "success_rate": 0.0,
+                        "partial_rate": 0.0,
+                        "average_attempts": 0.0,
+                        "average_score": 0.0,
+                    },
+                )
+                continue
+
+            total = len(results)
+            successful = sum(1 for r in results if r.status == "correct")
+            partial = sum(1 for r in results if r.status == "partial")
+            failed = sum(1 for r in results if r.status == "incorrect")
+            avg_attempts = round(sum(r.attempts_count for r in results) / total, 2)
+            avg_score = round(sum(r.score for r in results) / total, 1)
+
+            TaskStatistics.objects.update_or_create(
                 task=task,
                 defaults={
-                    "total_submissions": 15,
-                    "successful_submissions": 9,
-                    "partial_submissions": 3,
-                    "failed_submissions": 3,
-                    "success_rate": 60.0,
-                    "partial_rate": 20.0,
-                    "average_attempts": 1.6,
-                    "average_score": 72.0,
+                    "total_submissions": total,
+                    "successful_submissions": successful,
+                    "partial_submissions": partial,
+                    "failed_submissions": failed,
+                    "success_rate": round(successful / total * 100, 1),
+                    "partial_rate": round(partial / total * 100, 1),
+                    "average_attempts": avg_attempts,
+                    "average_score": avg_score,
                 },
             )
 
         for module in CourseModule.objects.all():
-            ModuleStatistics.objects.get_or_create(
+            progress_qs = list(module.student_progress.all())
+            total_started = len(progress_qs)
+            completed = sum(1 for p in progress_qs if p.status == "completed")
+            avg_completion = round(sum(p.completion_percent for p in progress_qs) / total_started, 1) if total_started else 0.0
+            avg_score = round(sum(p.total_score for p in progress_qs) / total_started, 1) if total_started else 0.0
+
+            ModuleStatistics.objects.update_or_create(
                 module=module,
                 defaults={
-                    "total_students_started": 12,
-                    "students_completed": 7,
-                    "average_completion_percent": 66.0,
-                    "average_module_score": 74.0,
+                    "total_students_started": total_started,
+                    "students_completed": completed,
+                    "average_completion_percent": avg_completion,
+                    "average_module_score": avg_score,
                 },
             )
